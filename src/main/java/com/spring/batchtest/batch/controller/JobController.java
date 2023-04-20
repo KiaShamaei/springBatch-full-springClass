@@ -27,7 +27,7 @@ public class JobController {
             JobParametersInvalidException,
             JobRestartException {
         if(jobname.equals("firstjob")){
-            service.firstJobRunner();
+            service.firstJobRunnerRest();
             return "job call now";
         }
 

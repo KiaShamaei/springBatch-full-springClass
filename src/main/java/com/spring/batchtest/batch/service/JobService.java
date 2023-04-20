@@ -11,6 +11,7 @@ import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteExcep
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -27,10 +28,24 @@ public class JobService {
         this.firstJob = firstJob;
     }
     @Async
-    public void firstJobRunner() throws JobInstanceAlreadyCompleteException,
+    public void firstJobRunnerRest() throws JobInstanceAlreadyCompleteException,
             JobExecutionAlreadyRunningException,
             JobParametersInvalidException,
             JobRestartException {
+        Map<String, JobParameter> param = new HashMap<>();
+        param.put("current" , new JobParameter(System.currentTimeMillis()));
+        //make JobParameters --->
+        JobParameters j = new JobParameters(param);
+        jobLauncher.run(firstJob,j);
+    }
+
+
+    @Scheduled(cron = "0 0/1 * 1/1 * ?")
+    public void firstJobRunnerScheduling() throws JobInstanceAlreadyCompleteException,
+            JobExecutionAlreadyRunningException,
+            JobParametersInvalidException,
+            JobRestartException {
+        System.out.println("job call from schedule--------------->");
         Map<String, JobParameter> param = new HashMap<>();
         param.put("current" , new JobParameter(System.currentTimeMillis()));
         //make JobParameters --->
