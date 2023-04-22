@@ -1,2 +1,4 @@
-package com.spring.batchtest.batch;public class BatchConfigRest {
+package com.spring.batchtest.batch;
+
+public class BatchConfigRest {
 }
