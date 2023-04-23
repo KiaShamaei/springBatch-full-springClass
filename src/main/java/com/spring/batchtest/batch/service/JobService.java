@@ -24,13 +24,17 @@ public class JobService {
     private final Job csvJob;
     private  final Job jsonJob;
 
+    private final Job restJob;
+
     public JobService(JobLauncher jobLauncher,
                       @Qualifier("firstjob") Job firstJob,
-                      @Qualifier("csvJob") Job csvJob, Job jsonJob) {
+                      @Qualifier("csvJob") Job csvJob, Job jsonJob,
+                      @Qualifier("restJob") Job restJob) {
         this.jobLauncher = jobLauncher;
         this.firstJob = firstJob;
         this.csvJob = csvJob;
         this.jsonJob = jsonJob;
+        this.restJob = restJob;
     }
     @Async
     public void firstJobRunnerRest() throws JobInstanceAlreadyCompleteException,
@@ -45,7 +49,7 @@ public class JobService {
     }
 
 
-    @Scheduled(cron = "0 0/1 * 1/1 * ?")
+//    @Scheduled(cron = "0 0/1 * 1/1 * ?")
     public void firstJobRunnerScheduling() throws JobInstanceAlreadyCompleteException,
             JobExecutionAlreadyRunningException,
             JobParametersInvalidException,
@@ -58,7 +62,7 @@ public class JobService {
         jobLauncher.run(firstJob,j);
     }
 
-    @Scheduled(cron = "0/30 * * 1/1 * ?")
+//    @Scheduled(cron = "0/30 * * 1/1 * ?")
     public void csvJoblancher() throws JobInstanceAlreadyCompleteException,
             JobExecutionAlreadyRunningException,
             JobParametersInvalidException,
@@ -71,7 +75,7 @@ public class JobService {
         jobLauncher.run(csvJob,j);
     }
 
-    @Scheduled(cron = "0/30 * * 1/1 * ?")
+//    @Scheduled(cron = "0/30 * * 1/1 * ?")
     public void jsonJoblancher() throws JobInstanceAlreadyCompleteException,
             JobExecutionAlreadyRunningException,
             JobParametersInvalidException,
@@ -82,6 +86,19 @@ public class JobService {
         //make JobParameters --->
         JobParameters j = new JobParameters(param);
         jobLauncher.run(jsonJob,j);
+    }
+
+    @Scheduled(cron = "0 0/1 * 1/1 * ?")
+    public void restJoblancher() throws JobInstanceAlreadyCompleteException,
+            JobExecutionAlreadyRunningException,
+            JobParametersInvalidException,
+            JobRestartException {
+        System.out.println("job call from schedule rest--------------->"+ System.currentTimeMillis());
+        Map<String, JobParameter> param = new HashMap<>();
+        param.put("current" , new JobParameter(System.currentTimeMillis()));
+        //make JobParameters --->
+        JobParameters j = new JobParameters(param);
+        jobLauncher.run(restJob,j);
     }
 
 }

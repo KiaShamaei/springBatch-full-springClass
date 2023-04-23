@@ -76,7 +76,6 @@ public class BatchConfigCsv {
                     }
                 });
             }
-
             });
 
         //set skip line
