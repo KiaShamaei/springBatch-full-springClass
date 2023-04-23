@@ -28,7 +28,8 @@ public class JobService {
 
     public JobService(JobLauncher jobLauncher,
                       @Qualifier("firstjob") Job firstJob,
-                      @Qualifier("csvJob") Job csvJob, Job jsonJob,
+                      @Qualifier("csvJob") Job csvJob,
+                      @Qualifier("jsonJob") Job jsonJob,
                       @Qualifier("restJob") Job restJob) {
         this.jobLauncher = jobLauncher;
         this.firstJob = firstJob;
@@ -75,7 +76,7 @@ public class JobService {
         jobLauncher.run(csvJob,j);
     }
 
-//    @Scheduled(cron = "0/30 * * 1/1 * ?")
+    @Scheduled(cron = "0/30 * * 1/1 * ?")
     public void jsonJoblancher() throws JobInstanceAlreadyCompleteException,
             JobExecutionAlreadyRunningException,
             JobParametersInvalidException,
@@ -88,7 +89,7 @@ public class JobService {
         jobLauncher.run(jsonJob,j);
     }
 
-    @Scheduled(cron = "0 0/1 * 1/1 * ?")
+//    @Scheduled(cron = "0 0/1 * 1/1 * ?")
     public void restJoblancher() throws JobInstanceAlreadyCompleteException,
             JobExecutionAlreadyRunningException,
             JobParametersInvalidException,
